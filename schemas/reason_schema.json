@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SyntheticDangerSafetyReasoning",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["safety_context", "risk_story", "review_aids"],
+  "properties": {
+    "safety_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standard_frames", "risk_reduction_principle", "responsibility_owner"],
+      "properties": {
+        "standard_frames": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "risk_reduction_principle": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["inherently_safe_design", "protective_measures", "information_for_use"]
+          },
+          "minItems": 1
+        },
+        "responsibility_owner": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["mechanical_design", "controls_integration", "operations_maintenance", "system_integration"]
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "risk_story": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "as_is",
+        "controls_A_design",
+        "controls_B_detect_stop",
+        "controls_C_operational",
+        "residual_risk_notes"
+      ],
+      "properties": {
+        "as_is": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "controls_A_design": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 220 },
+          "minItems": 1,
+          "maxItems": 7
+        },
+        "controls_B_detect_stop": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 220 },
+          "minItems": 1,
+          "maxItems": 7
+        },
+        "controls_C_operational": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 220 },
+          "minItems": 1,
+          "maxItems": 7
+        },
+        "residual_risk_notes": { "type": "string", "minLength": 1, "maxLength": 400 }
+      }
+    },
+    "review_aids": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["why_it_matters", "key_assumptions", "confidence", "open_questions"],
+      "properties": {
+        "why_it_matters": { "type": "string", "minLength": 1, "maxLength": 350 },
+        "key_assumptions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 180 },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["Low", "Medium", "High"]
+        },
+        "open_questions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 180 },
+          "minItems": 0,
+          "maxItems": 10
+        }
+      }
+    }
+  }
+}

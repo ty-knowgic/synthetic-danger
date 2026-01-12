@@ -37,7 +37,7 @@
     "primary_failure": { "type": "string", "minLength": 10 },
     "propagation_chain": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 4,
       "items": { "type": "string", "minLength": 6 }
     },
     "final_impact": { "type": "string", "minLength": 10 },

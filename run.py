@@ -28,7 +28,7 @@ except Exception:  # pragma: no cover
 SYSTEM_TXT_PATH = "data/system.txt"
 SYSTEM_YAML_PATH = "templates/system_input.yaml"  # new structured input
 ONTOLOGY_PATH = "ontology/hazard_ontology.json"
-SCHEMA_PATH = "schema/hazard.schema.json"
+SCHEMA_PATH = "schemas/hazard.schema.json"
 OUTPUT_PATH = "outputs/hazards.json"
 
 
