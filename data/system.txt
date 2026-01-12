@@ -1,0 +1,33 @@
+The system is a 6-axis industrial robotic arm equipped with a vacuum suction gripper.
+
+The robot is used to pick metal parts from a moving conveyor belt and place them into trays.
+
+The perception system consists of an RGB camera mounted above the conveyor, along with fixed LED lighting.
+
+The control system is based on ROS2 with a motion planning module and a grasp pose estimation module.
+
+The robot operates in a factory environment where reflective metallic parts are frequently handled.
+
+Human operators may stand near the robot to monitor the process and occasionally adjust parts manually.
+
+An emergency stop (E-Stop) button is installed, but no physical safety fence is present.
+
+The conveyor speed may vary depending on upstream production conditions.
+
+The system is expected to operate continuously for long hours.
+
+Environmental conditions include dust, vibration from nearby machines, and varying lighting conditions.
+
+The task phases are:
+1. Detect part on conveyor
+2. Estimate grasp pose
+3. Plan motion
+4. Move to grasp position
+5. Activate vacuum gripper
+6. Lift part
+7. Move to target tray
+8. Release part
+
+The success condition is that the part is safely placed into the tray without collision, drop, or damage.
+
+Failure may result in dropped parts, collisions with equipment, or potential risk to nearby operators.

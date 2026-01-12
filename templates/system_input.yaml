@@ -1,0 +1,27 @@
+system_overview:
+  purpose: "Pick parts from a conveyor and place into a tray."
+  operating_mode: "auto"
+  safety_goal: "Prevent human injury during operation."
+
+components:
+  robot: "6-axis industrial robot arm"
+  end_effector: "vacuum gripper"
+  perception: "RGB camera"
+  control: "ROS2 motion planner"
+
+tasks:
+  - "Detect part on conveyor"
+  - "Estimate grasp pose"
+  - "Move to grasp position"
+  - "Activate vacuum gripper"
+  - "Lift part"
+  - "Move to target tray"
+  - "Release part"
+
+environment:
+  human_presence: "occasional"
+  guarding: "none"
+
+assumptions:
+  - "Camera calibration is maintained"
+  - "Vacuum pressure sensor works correctly"

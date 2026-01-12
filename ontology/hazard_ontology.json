@@ -1,0 +1,67 @@
+{
+  "categories": {
+    "Mechanical": [
+      "Collision",
+      "DroppedObject",
+      "PinchPoint",
+      "WearAndTear",
+      "Overload",
+      "FastenerFailure"
+    ],
+    "Electrical": [
+      "PowerLoss",
+      "Brownout",
+      "EMI",
+      "GroundFault",
+      "Overcurrent",
+      "EStopFailure"
+    ],
+    "Software": [
+      "StateDesync",
+      "UnhandledException",
+      "RaceCondition",
+      "MemoryLeak",
+      "ConfigError",
+      "UpdateRegression"
+    ],
+    "Control": [
+      "Overshoot",
+      "Oscillation",
+      "Delay",
+      "Saturation",
+      "PlannerFailure",
+      "UnsafeRecovery"
+    ],
+    "Perception": [
+      "Occlusion",
+      "GlareReflection",
+      "MotionBlur",
+      "LowContrast",
+      "Misclassification",
+      "DomainShift"
+    ],
+    "HumanInteraction": [
+      "Misuse",
+      "UnexpectedEntry",
+      "HRIConfusion",
+      "PPEViolation",
+      "TrainingGap"
+    ],
+    "Environment": [
+      "TemperatureExtreme",
+      "Humidity",
+      "Dust",
+      "Vibration",
+      "PoorLighting",
+      "ReflectiveSurfaces"
+    ],
+    "SystemIntegration": [
+      "TimingMismatch",
+      "InterfaceMismatch",
+      "SensorActuatorMisalignment",
+      "CalibrationDrift",
+      "NetworkLatency",
+      "ToolingMismatch"
+    ]
+  }
+}
