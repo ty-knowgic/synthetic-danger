@@ -1,6 +1,6 @@
 # Synthetic Danger (PoC)
 
-Synthetic Danger generates **draft hazard candidates**, **safety requirements**, and **verification ideas** for robotic systems, and exports them as review‑ready **HTML / XLSX** reports.
+Synthetic Danger generates **draft hazards**, **safety requirements**, and **verification ideas** from structured system definitions, enabling faster robotic safety reviews with LLM support.
 
 > ⚠️ Disclaimer  
 > This tool generates *draft artifacts* to accelerate safety reviews.  
