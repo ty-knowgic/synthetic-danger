@@ -173,3 +173,25 @@ Typical future extensions:
 - export for FMEA / FTA workflows
 
 ---
+
+## License
+
+Safety Danger is licensed under the **Mozilla Public License 2.0 (MPL-2.0)**.
+
+- You may use, modify, and distribute this project, including in commercial settings.
+- If you modify and distribute files covered by MPL-2.0, you must make those modified files available under MPL-2.0.
+- You may keep separate proprietary code (e.g., plugins, integrations, or enterprise extensions) closed-source, as long as it is not a modification of MPL-covered files.
+
+This project is a **thought-extension pipeline for human safety design**, not a compliance evidence generator and not a formal-methods/verification tool.
+
+## Commercial extensions
+
+We may offer paid extensions (e.g., review-assist features, quality-control layers, or enterprise integrations) under separate commercial terms.
+
+The open-source core remains MPL-2.0.
+
+## Disclaimer
+
+Safety Danger provides generated artifacts to support **human review and decision-making**.
+It does not guarantee correctness, completeness, or safety outcomes.
+You are responsible for verification, validation, and real-world safety decisions.
