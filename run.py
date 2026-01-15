@@ -4,6 +4,8 @@ import time
 import re
 import argparse
 import sys
+import shutil
+import subprocess
 from typing import List, Dict, Any, Optional, Tuple
 
 from dotenv import load_dotenv
@@ -26,8 +28,9 @@ except Exception:  # pragma: no cover
 
 # -------- Paths --------
 SYSTEM_TXT_PATH = "data/system.txt"
-SYSTEM_YAML_PATH = "templates/system_input.yaml"  # new structured input
+SYSTEM_YAML_PATH = "templates/system_input.yaml"  # structured input
 ONTOLOGY_PATH = "ontology/hazard_ontology.json"
+# JSON Schema for hazard items (kept under schemas/ to avoid directory name drift)
 SCHEMA_PATH = "schemas/hazard.schema.json"
 OUTPUT_PATH = "outputs/hazards.json"
 
@@ -50,6 +53,24 @@ FORBIDDEN_TASK_PHASES = {"Any", "N/A", "NA", "Unknown", ""}
 def ensure_dirs():
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
+def archive_outputs_dir(outputs_dir: str, archive_root: str) -> Optional[str]:
+    if not os.path.isdir(outputs_dir):
+        return None
+    try:
+        entries = os.listdir(outputs_dir)
+    except FileNotFoundError:
+        return None
+    if not entries:
+        return None
+    os.makedirs(archive_root, exist_ok=True)
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    dest = os.path.join(archive_root, f"outputs_{timestamp}")
+    shutil.move(outputs_dir, dest)
+    return dest
+
+def run_step(args: List[str]) -> None:
+    print(f"[info] running: {' '.join(args)}")
+    subprocess.run(args, check=True)
 
 
 def read_text(path: str) -> str:
@@ -472,6 +493,11 @@ def enforce_local_rules(hazards: List[Dict[str, Any]], task_phases: List[str]) -
 
 # -------- Main --------
 def main():
+    outputs_dir = os.path.abspath(os.path.dirname(OUTPUT_PATH))
+    archive_root = os.path.abspath("outputs_archive")
+    archived = archive_outputs_dir(outputs_dir, archive_root)
+    if archived:
+        print(f"[info] archived existing outputs to: {archived}")
     ensure_dirs()
     load_dotenv()
 
@@ -583,6 +609,27 @@ def main():
         json.dump(out, f, ensure_ascii=False, indent=2)
 
     print(f"[ok] wrote: {OUTPUT_PATH}")
+
+    if not all_hazards:
+        print("[warn] no hazards generated; skipping enrichment pipeline.")
+        run_step([sys.executable, "report.py", "--input", OUTPUT_PATH, "--outdir", "outputs", "--basename", "report"])
+        return
+
+    run_step([sys.executable, "normalize.py"])
+    run_step([sys.executable, "enrich.py", "--resume"])
+    run_step([sys.executable, "repair_truncation.py"])
+    run_step(
+        [
+            sys.executable,
+            "report.py",
+            "--input",
+            "outputs/hazards_enriched_repaired.json",
+            "--outdir",
+            "outputs",
+            "--basename",
+            "report",
+        ]
+    )
 
 
 if __name__ == "__main__":

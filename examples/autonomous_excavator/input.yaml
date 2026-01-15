@@ -1,0 +1,206 @@
+project:
+  name: "Autonomous Excavator (GenAI-assisted safety thinking example)"
+  version: "0.1"
+  owner: "Tetsu"
+  goal:
+    - "Human-centered hazard thinking expansion (not compliance proof)"
+    - "Generate reviewable hazard list with assumptions and reasoning"
+  notes:
+    - "This artifact extends human safety thinking. Human review is required."
+
+system:
+  product_type: "Construction equipment / Excavator"
+  autonomy_level: "Autonomous (supervised) - remote operator can intervene"
+  high_level_description: >
+    A tracked excavator capable of autonomous digging, loading, and dumping in a geofenced worksite.
+    It uses perception (cameras/LiDAR), localization, planning, and hydraulic actuation control.
+    A remote operator can take over and/or trigger emergency stop.
+  boundaries:
+    included:
+      - "Vehicle base (tracks, boom/arm/bucket, hydraulics)"
+      - "Perception sensors (LiDAR, cameras), GNSS/IMU"
+      - "Onboard compute, autonomy stack (planning/control)"
+      - "Remote monitoring & teleoperation interface (supervisory)"
+      - "Safety functions (E-Stop, speed/zone limits, fail-safe states)"
+    excluded:
+      - "Design certification / regulatory evidence generation"
+      - "Formal verification / proof-oriented models"
+      - "Full site-wide traffic management system (only interface assumptions)"
+
+task_phases:
+  - "Mobilize / Site entry"
+  - "Startup & self-check"
+  - "Navigate within geofence"
+  - "Dig / trenching"
+  - "Swing / rotate upper structure"
+  - "Load into truck / dump"
+  - "Reposition / track movement"
+  - "Idle / wait"
+  - "Shutdown / park"
+  - "Maintenance / service (non-operational)"
+
+operational_context:
+  operational_design_domain:
+    site_type:
+      - "Construction site (earthmoving)"
+      - "Quarry / stockpile yard"
+    ground_conditions:
+      - "Uneven ground, slopes, soft soil, mud"
+      - "Possible hidden obstacles (rocks, rebar, buried utilities)"
+    weather_lighting:
+      - "Day/night operations"
+      - "Dust/fog/rain/snow possible"
+    traffic_and_people:
+      - "Human workers on foot"
+      - "Other machines (dump trucks, loaders)"
+      - "Visitors/contractors occasionally"
+  typical_tasks:
+    - "Autonomous digging trench / pit"
+    - "Loading soil into dump truck"
+    - "Dumping into a designated area"
+    - "Repositioning within geofenced area"
+  mission_success_criteria:
+    - "Complete tasks within time and quality constraints"
+    - "No harm to people"
+    - "No unacceptable property/environment damage"
+    - "Machine remains controllable / recoverable"
+
+actors:
+  humans:
+    - role: "Remote operator (supervisor)"
+      capabilities: ["can take over teleop", "can trigger E-Stop", "monitors alerts"]
+    - role: "Spotter / site supervisor"
+      capabilities: ["visual confirmation", "radio communication", "enforces exclusion zones"]
+    - role: "Worker on foot"
+      capabilities: ["may enter near machine unexpectedly"]
+    - role: "Maintenance technician"
+      capabilities: ["service hydraulics/sensors", "may work near moving parts"]
+  external_systems:
+    - name: "GNSS correction / RTK service"
+    - name: "Site geofence map provider"
+    - name: "Radio / LTE connectivity"
+
+assumptions:
+  intent: >
+    Explicit assumptions are required. If assumptions do not hold, hazards may change significantly.
+  list:
+    - id: "A-001"
+      statement: "Geofence map is provided and kept up-to-date."
+      fragility: "medium"
+    - id: "A-002"
+      statement: "Remote operator is available during autonomous operation and trained for intervention."
+      fragility: "high"
+    - id: "A-003"
+      statement: "Workers are instructed to respect exclusion zones, but violations can occur."
+      fragility: "high"
+    - id: "A-004"
+      statement: "Sensors may degrade due to dust/mud; cleaning schedule exists but is imperfect."
+      fragility: "high"
+    - id: "A-005"
+      statement: "E-Stop circuit is independent and can cut motion quickly (within defined stop time)."
+      fragility: "medium"
+
+architecture:
+  subsystems:
+    - name: "Perception"
+      elements: ["LiDAR", "Cameras", "Object detection", "Free-space estimation"]
+    - name: "Localization"
+      elements: ["GNSS/RTK", "IMU", "Odometry", "SLAM (optional)"]
+    - name: "Planning"
+      elements: ["Task planner", "Motion planner", "Collision checking", "Geofence enforcement"]
+    - name: "Control"
+      elements: ["Track control", "Hydraulic control", "Bucket trajectory control"]
+    - name: "Safety Functions"
+      elements: ["E-Stop", "Speed limiting", "Zone limiting", "Fault detection", "Safe state transition"]
+    - name: "Remote Ops"
+      elements: ["Teleop console", "Video feed", "Alerts", "Override control"]
+  interfaces_of_interest:
+    - "Perception -> Planning"
+    - "Localization -> Planning"
+    - "Planning -> Control"
+    - "Safety Functions -> Control (inhibit/override)"
+    - "Remote Ops -> Control (override)"
+    - "Connectivity -> Remote Ops (loss/latency)"
+
+modes_and_states:
+  modes:
+    - "Manual (onboard operator)"
+    - "Teleoperation (remote direct control)"
+    - "Autonomous supervised (remote operator monitors)"
+    - "Autonomous degraded (reduced speed/function)"
+    - "Safe stop / E-stop"
+  state_transitions_of_interest:
+    - "Autonomous -> Safe stop"
+    - "Autonomous -> Teleop takeover"
+    - "Degraded -> Safe stop"
+    - "Connectivity lost -> Safe stop or controlled halt"
+
+hazard_generation:
+  scope:
+    focus:
+      - "Human-machine interaction hazards"
+      - "Perception/decision/control failure hazards"
+      - "Hydraulic/actuation hazards"
+      - "Site condition hazards (ground, slope, buried utilities)"
+      - "Connectivity/teleop hazards"
+    out_of_scope:
+      - "Regulatory compliance proof or certification claims"
+      - "Formal verification artifacts"
+  prompts:
+    style:
+      - "Assumption-led"
+      - "Failure narrative first, then structure"
+      - "Keep human review central"
+    required_fields_per_hazard:
+      - "hazard_statement"
+      - "who_can_be_harmed"
+      - "trigger_conditions"
+      - "assumptions_involved"
+      - "reasoning"
+      - "review_questions"
+      - "possible_mitigations (non-prescriptive; options only)"
+  constraints:
+    avoid:
+      - "Overconfident claims"
+      - "Compliance language (shall/ISO clause quoting) as primary output"
+      - "Formal-model framing"
+    prefer:
+      - "Concrete site scenarios"
+      - "Operator/worker behavior variability"
+      - "Sensor degradation realities"
+      - "Edge cases and near-miss narratives"
+
+output:
+  formats:
+    - "html"
+    - "excel"
+  report_metadata:
+    audience: ["Safety engineer", "Site supervisor", "Autonomy engineer", "Remote operator lead"]
+    review_mode: "Human review required; outputs are not ground truth"
+
+# --- compatibility aliases for current run.py task extraction ---
+task_structure:
+  task_phases:
+    - "Mobilize / Site entry"
+    - "Startup & self-check"
+    - "Navigate within geofence"
+    - "Dig / trenching"
+    - "Swing / rotate upper structure"
+    - "Load into truck / dump"
+    - "Reposition / track movement"
+    - "Idle / wait"
+    - "Shutdown / park"
+    - "Maintenance / service (non-operational)"
+
+tasks:
+  task_phases:
+    - "Mobilize / Site entry"
+    - "Startup & self-check"
+    - "Navigate within geofence"
+    - "Dig / trenching"
+    - "Swing / rotate upper structure"
+    - "Load into truck / dump"
+    - "Reposition / track movement"
+    - "Idle / wait"
+    - "Shutdown / park"
+    - "Maintenance / service (non-operational)"
