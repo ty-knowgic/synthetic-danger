@@ -1,0 +1,189 @@
+project:
+  name: "Warehouse AMR Tugger (GenAI-assisted safety thinking example)"
+  version: "0.1"
+  owner: "Tetsu"
+  goal:
+    - "Human-centered hazard thinking expansion (not compliance proof)"
+    - "Generate reviewable hazard list with assumptions and reasoning"
+  notes:
+    - "This artifact extends human safety thinking. Human review is required."
+
+system:
+  product_type: "Warehouse AMR tugger"
+  autonomy_level: "Autonomous (supervised) - fleet manager can intervene"
+  high_level_description: >
+    An autonomous mobile robot that tows carts in a warehouse to move inventory
+    between storage, packing, and staging. It navigates aisles, detects people and
+    obstacles, and docks to carts using a hitch mechanism. A fleet manager can pause
+    or teleoperate the unit when needed.
+  boundaries:
+    included:
+      - "AMR base (drive, brakes, hitch)"
+      - "Perception sensors (LiDAR, cameras)"
+      - "Onboard compute and autonomy stack"
+      - "Fleet management interface (dispatch/monitoring)"
+      - "Safety functions (E-Stop, speed/zone limits)"
+    excluded:
+      - "Building-wide fire or access control systems"
+      - "Formal verification / proof-oriented models"
+      - "Warehouse ERP inventory accuracy guarantees"
+
+task_phases:
+  - "Dispatch / job assignment"
+  - "Navigate to pickup zone"
+  - "Dock to cart"
+  - "Tow load to destination"
+  - "Queue / wait for clearance"
+  - "Unload / release cart"
+  - "Return to idle / charge"
+  - "Manual recovery / teleop"
+
+operational_context:
+  operational_design_domain:
+    site_type:
+      - "Indoor warehouse"
+      - "Cross-dock staging area"
+    ground_conditions:
+      - "Concrete floors with occasional debris"
+      - "Floor markings and guide lanes"
+    weather_lighting:
+      - "Indoor lighting; occasional glare near dock doors"
+      - "Dust from packaging materials"
+    traffic_and_people:
+      - "Warehouse workers on foot"
+      - "Forklifts and pallet jacks"
+      - "Other AMRs in fleet"
+  typical_tasks:
+    - "Pickup empty cart"
+    - "Tow loaded cart to packing"
+    - "Move carts to outbound staging"
+    - "Return to charging area"
+  mission_success_criteria:
+    - "Deliver carts on time"
+    - "No harm to people"
+    - "No product damage"
+    - "Maintain aisle flow and avoid congestion"
+
+actors:
+  humans:
+    - role: "Fleet manager"
+      capabilities: ["pause/resume", "reassign jobs", "remote teleop"]
+    - role: "Warehouse worker"
+      capabilities: ["walks in aisles", "moves pallets", "may step into path"]
+    - role: "Maintenance technician"
+      capabilities: ["service sensors/drive", "may work near moving parts"]
+  external_systems:
+    - name: "Fleet management server"
+    - name: "Warehouse Wi-Fi"
+    - name: "Dock door control (interface assumption)"
+
+assumptions:
+  intent: >
+    Explicit assumptions are required. If assumptions do not hold, hazards may change.
+  list:
+    - id: "A-101"
+      statement: "Warehouse map and no-go zones are kept up-to-date."
+      fragility: "medium"
+    - id: "A-102"
+      statement: "Workers are trained to yield to AMR lanes, but violations occur."
+      fragility: "high"
+    - id: "A-103"
+      statement: "Hitch mechanism is inspected on a regular schedule."
+      fragility: "medium"
+    - id: "A-104"
+      statement: "Wi-Fi coverage is sufficient for dispatch and monitoring."
+      fragility: "high"
+    - id: "A-105"
+      statement: "Emergency stop circuits are functional and accessible."
+      fragility: "medium"
+
+architecture:
+  subsystems:
+    - name: "Perception"
+      elements: ["LiDAR", "Cameras", "Obstacle detection", "Human detection"]
+    - name: "Localization"
+      elements: ["SLAM", "Wheel odometry", "Map matching"]
+    - name: "Planning"
+      elements: ["Route planner", "Traffic management", "Docking planner"]
+    - name: "Control"
+      elements: ["Drive control", "Brake control", "Hitch control"]
+    - name: "Safety Functions"
+      elements: ["E-Stop", "Speed limiting", "Zone limiting", "Safe stop"]
+    - name: "Fleet Ops"
+      elements: ["Job dispatch", "Remote teleop", "Monitoring UI"]
+  interfaces_of_interest:
+    - "Perception -> Planning"
+    - "Localization -> Planning"
+    - "Planning -> Control"
+    - "Safety Functions -> Control"
+    - "Fleet Ops -> Planning (dispatch)"
+    - "Connectivity -> Fleet Ops (loss/latency)"
+
+modes_and_states:
+  modes:
+    - "Autonomous"
+    - "Teleoperation"
+    - "Manual push / tow"
+    - "Safe stop / E-stop"
+    - "Charging"
+  state_transitions_of_interest:
+    - "Autonomous -> Safe stop"
+    - "Autonomous -> Teleop takeover"
+    - "Connectivity lost -> Safe stop"
+    - "Docking -> Recovery"
+
+hazard_generation:
+  scope:
+    focus:
+      - "Human-machine interaction hazards"
+      - "Docking / hitch hazards"
+      - "Traffic coordination hazards"
+      - "Connectivity / dispatch hazards"
+      - "Load stability hazards"
+    out_of_scope:
+      - "Formal verification artifacts"
+      - "Regulatory compliance proof"
+  prompts:
+    style:
+      - "Assumption-led"
+      - "Failure narrative first, then structure"
+      - "Keep human review central"
+  constraints:
+    avoid:
+      - "Overconfident claims"
+      - "Compliance language as primary output"
+    prefer:
+      - "Concrete warehouse scenarios"
+      - "Worker behavior variability"
+      - "Occlusion and congestion edge cases"
+
+output:
+  formats:
+    - "html"
+    - "excel"
+  report_metadata:
+    audience: ["Safety engineer", "Warehouse supervisor", "Fleet operator"]
+    review_mode: "Human review required; outputs are not ground truth"
+
+# --- compatibility aliases for current run.py task extraction ---
+task_structure:
+  task_phases:
+    - "Dispatch / job assignment"
+    - "Navigate to pickup zone"
+    - "Dock to cart"
+    - "Tow load to destination"
+    - "Queue / wait for clearance"
+    - "Unload / release cart"
+    - "Return to idle / charge"
+    - "Manual recovery / teleop"
+
+tasks:
+  task_phases:
+    - "Dispatch / job assignment"
+    - "Navigate to pickup zone"
+    - "Dock to cart"
+    - "Tow load to destination"
+    - "Queue / wait for clearance"
+    - "Unload / release cart"
+    - "Return to idle / charge"
+    - "Manual recovery / teleop"
