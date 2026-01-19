@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: ../_site
+
+website:
+  title: "Synthetic Danger"
+  navbar:
+    left:
+      - text: "Home"
+        file: index.md
+      - text: "Usage"
+        file: usage.md
+      - text: "Architecture"
+        file: architecture.md
+      - text: "Inputs"
+        file: inputs.md
+      - text: "Troubleshooting"
+        file: troubleshooting.md
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
