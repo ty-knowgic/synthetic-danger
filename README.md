@@ -19,17 +19,25 @@ For detailed guides, architecture, and troubleshooting, please refer to our docu
 
 ### Installation
 
+Ensure you have [Pixi](https://pixi.sh) installed.
+
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install openai python-dotenv jsonschema pandas openpyxl pyyaml
+pixi install
 ```
 
 ### Run
 
 ```bash
-python3 run.py --mode yaml --yaml templates/system_input.yaml --validate
+# Generate hazards
+pixi run run
+
+# Validate input
+pixi run validate
+
+# Render documentation
+pixi run docs
 ```
+
 
 ---
 
