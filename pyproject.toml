@@ -1,0 +1,37 @@
+[project]
+name = "synthetic-danger"
+version = "0.1.0"
+description = "Draft hazard generation for robotic safety reviews."
+authors = [{ name = "Nexclair", email = "contact@nexclair.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "openai",
+    "python-dotenv",
+    "jsonschema",
+    "pandas",
+    "openpyxl",
+    "pyyaml"
+]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64", "osx-64"]
+
+[tool.pixi.tasks]
+run = "python3 run.py --mode yaml --yaml templates/system_input.yaml --validate"
+validate = "python3 validate_input.py --yaml templates/system_input.yaml"
+docs = "quarto render docs/ --output-dir ../_site"
+
+# Individual pipeline steps
+analyze = "python3 analyze.py"
+normalize = "python3 normalize.py"
+enrich = "python3 enrich.py --resume"
+repair = "python3 repair_truncation.py"
+report = "python3 report.py"
+
+
+[tool.pixi.dependencies]
+python = ">=3.11"
+pip = "*"
+quarto = "*"
+

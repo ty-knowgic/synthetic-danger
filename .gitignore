@@ -6,3 +6,8 @@ outputs/
 outputs_archive/
 .DS_Store
 out/
+
+/.quarto/
+**/*.quarto_ipynb
+
+_site/
