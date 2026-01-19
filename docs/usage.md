@@ -7,7 +7,7 @@
 Edit `templates/system_input.yaml` and run:
 
 ```bash
-python3 run.py --mode yaml --yaml templates/system_input.yaml --validate
+pixi run run
 ```
 
 ### TXT Mode (Legacy)
@@ -15,18 +15,19 @@ python3 run.py --mode yaml --yaml templates/system_input.yaml --validate
 If you prefer free-text:
 
 ```bash
-python3 run.py --mode txt --txt data/system.txt
+pixi run python3 run.py --mode txt --txt data/system.txt
 ```
 
 ## Processing Pipeline
 
 The full pipeline consists of several steps to ensure high-quality, normalized output:
 
-1. **Analyze**: `python3 analyze.py` (Initial hazard identification)
-2. **Normalize**: `python3 normalize.py` (Collapses similar components/phases)
-3. **Enrich**: `python3 enrich.py --resume` (Adds requirements and verification ideas)
-4. **Repair**: `python3 repair_truncation.py` (Fixes cut-off LLM responses)
-5. **Report**: `python3 report.py` (Generates HTML and Excel reports)
+1. **Analyze**: `pixi run analyze` (Initial hazard identification)
+2. **Normalize**: `pixi run normalize` (Collapses similar components/phases)
+3. **Enrich**: `pixi run enrich` (Adds requirements and verification ideas)
+4. **Repair**: `pixi run repair` (Fixes cut-off LLM responses)
+5. **Report**: `pixi run report` (Generates HTML and Excel reports)
+
 
 ## Outputs
 

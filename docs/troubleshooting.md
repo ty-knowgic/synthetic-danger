@@ -6,7 +6,7 @@
 **A:** OpenAI API latency is the main factor. Lowering `TARGET_PER_CATEGORY` in your `.env` can help.
 
 ### Q: Why do I see "..." in the generated output?
-**A:** LLM outputs are sometimes truncated due to token limits. Run `python3 repair_truncation.py` to fix these automatically.
+**A:** LLM outputs are sometimes truncated due to token limits. Run `pixi run repair` to fix these automatically.
 
 ### Q: How do I avoid overwriting my previous results?
 **A:** The tool automatically archives the `outputs/` directory to `outputs_archive/` with a timestamp before each new run.
@@ -20,7 +20,8 @@
 Ensure you are running the script from the repository root, or specify an absolute path to the YAML file.
 
 ### Missing Dependencies
-If you encounter `ModuleNotFoundError`, ensure your virtual environment is active and you have run:
+If you encounter `ModuleNotFoundError`, simply run:
 ```bash
-pip install openai python-dotenv jsonschema pandas openpyxl pyyaml
+pixi install
 ```
+

@@ -9,11 +9,10 @@ Synthetic Danger generates **draft hazards**, **safety requirements**, and **ver
 
 ### 1. Installation
 
+Ensure you have [Pixi](https://pixi.sh) installed, then run:
+
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -U pip
-pip install openai python-dotenv jsonschema pandas openpyxl pyyaml
+pixi install
 ```
 
 ### 2. Configuration
@@ -27,7 +26,8 @@ OPENAI_API_KEY=YOUR_API_KEY
 ### 3. Run a sample
 
 ```bash
-python3 run.py --mode yaml --yaml templates/system_input.yaml --validate
+pixi run run
 ```
+
 
 The output will be generated in `outputs/hazards.json`.
